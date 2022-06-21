@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+option go_package = "grpc-simple/proto";
+
+package proto;
+
+//import "google/protobuf/timestamp.proto";
+//import "gogoproto/gogo.proto";
+//import "google/api/annotations.proto";
+//import "google/protobuf/empty.proto";
+
+service Product {
+  rpc GetBy(GetByRequest) returns (GetByResponse) {};
+//  rpc GetAllById(google.protobuf.Empty) returns (GetAllByIdResponse) {};
+//  rpc GetAllByName(GetByRequest) returns (GetByResponse) {};
+//  rpc GetAllByCreate(GetByRequest) returns (GetByResponse) {};
+}
+
+message GetByRequest {
+  string id = 1;
+  string name = 2;
+//  google.protobuf.Timestamp created_at = 3;
+  int64 created_at = 3;
+  string price = 4;
+  string description = 5;
+}
+
+message GetByResponse {
+  string id = 1;
+  string name = 2;
+//  google.protobuf.Timestamp created_at = 3;
+  int64 created_at = 3;
+  string price = 4;
+  string description = 5;
+}
+
+//message GetAllByIdResponse {
+//  message Item {
+//    string id = 1;
+//    string name = 2;
+//    int64 created_at = 3;
+//    string price = 4;
+//    string description = 5;
+//  }
+//}
