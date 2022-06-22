@@ -23,6 +23,12 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProductClient interface {
 	GetBy(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetByResponse, error)
+	GetAllById(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error)
+	GetAllByIdDesc(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error)
+	GetAllByName(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error)
+	GetAllByNameDesc(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error)
+	GetAllByCreated(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error)
+	GetAllByCreatedDesc(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error)
 }
 
 type productClient struct {
@@ -42,11 +48,71 @@ func (c *productClient) GetBy(ctx context.Context, in *GetByRequest, opts ...grp
 	return out, nil
 }
 
+func (c *productClient) GetAllById(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error) {
+	out := new(GetAllByIdResponse)
+	err := c.cc.Invoke(ctx, "/proto.Product/GetAllById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) GetAllByIdDesc(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error) {
+	out := new(GetAllByIdResponse)
+	err := c.cc.Invoke(ctx, "/proto.Product/GetAllByIdDesc", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) GetAllByName(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error) {
+	out := new(GetAllByIdResponse)
+	err := c.cc.Invoke(ctx, "/proto.Product/GetAllByName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) GetAllByNameDesc(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error) {
+	out := new(GetAllByIdResponse)
+	err := c.cc.Invoke(ctx, "/proto.Product/GetAllByNameDesc", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) GetAllByCreated(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error) {
+	out := new(GetAllByIdResponse)
+	err := c.cc.Invoke(ctx, "/proto.Product/GetAllByCreated", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) GetAllByCreatedDesc(ctx context.Context, in *GetByRequest, opts ...grpc.CallOption) (*GetAllByIdResponse, error) {
+	out := new(GetAllByIdResponse)
+	err := c.cc.Invoke(ctx, "/proto.Product/GetAllByCreatedDesc", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductServer is the server API for Product service.
 // All implementations must embed UnimplementedProductServer
 // for forward compatibility
 type ProductServer interface {
 	GetBy(context.Context, *GetByRequest) (*GetByResponse, error)
+	GetAllById(context.Context, *GetByRequest) (*GetAllByIdResponse, error)
+	GetAllByIdDesc(context.Context, *GetByRequest) (*GetAllByIdResponse, error)
+	GetAllByName(context.Context, *GetByRequest) (*GetAllByIdResponse, error)
+	GetAllByNameDesc(context.Context, *GetByRequest) (*GetAllByIdResponse, error)
+	GetAllByCreated(context.Context, *GetByRequest) (*GetAllByIdResponse, error)
+	GetAllByCreatedDesc(context.Context, *GetByRequest) (*GetAllByIdResponse, error)
 	mustEmbedUnimplementedProductServer()
 }
 
@@ -56,6 +122,24 @@ type UnimplementedProductServer struct {
 
 func (UnimplementedProductServer) GetBy(context.Context, *GetByRequest) (*GetByResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBy not implemented")
+}
+func (UnimplementedProductServer) GetAllById(context.Context, *GetByRequest) (*GetAllByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllById not implemented")
+}
+func (UnimplementedProductServer) GetAllByIdDesc(context.Context, *GetByRequest) (*GetAllByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllByIdDesc not implemented")
+}
+func (UnimplementedProductServer) GetAllByName(context.Context, *GetByRequest) (*GetAllByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllByName not implemented")
+}
+func (UnimplementedProductServer) GetAllByNameDesc(context.Context, *GetByRequest) (*GetAllByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllByNameDesc not implemented")
+}
+func (UnimplementedProductServer) GetAllByCreated(context.Context, *GetByRequest) (*GetAllByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllByCreated not implemented")
+}
+func (UnimplementedProductServer) GetAllByCreatedDesc(context.Context, *GetByRequest) (*GetAllByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllByCreatedDesc not implemented")
 }
 func (UnimplementedProductServer) mustEmbedUnimplementedProductServer() {}
 
@@ -88,6 +172,114 @@ func _Product_GetBy_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Product_GetAllById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetByRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).GetAllById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Product/GetAllById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).GetAllById(ctx, req.(*GetByRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_GetAllByIdDesc_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetByRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).GetAllByIdDesc(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Product/GetAllByIdDesc",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).GetAllByIdDesc(ctx, req.(*GetByRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_GetAllByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetByRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).GetAllByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Product/GetAllByName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).GetAllByName(ctx, req.(*GetByRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_GetAllByNameDesc_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetByRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).GetAllByNameDesc(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Product/GetAllByNameDesc",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).GetAllByNameDesc(ctx, req.(*GetByRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_GetAllByCreated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetByRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).GetAllByCreated(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Product/GetAllByCreated",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).GetAllByCreated(ctx, req.(*GetByRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_GetAllByCreatedDesc_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetByRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).GetAllByCreatedDesc(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Product/GetAllByCreatedDesc",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).GetAllByCreatedDesc(ctx, req.(*GetByRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Product_ServiceDesc is the grpc.ServiceDesc for Product service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +290,30 @@ var Product_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBy",
 			Handler:    _Product_GetBy_Handler,
+		},
+		{
+			MethodName: "GetAllById",
+			Handler:    _Product_GetAllById_Handler,
+		},
+		{
+			MethodName: "GetAllByIdDesc",
+			Handler:    _Product_GetAllByIdDesc_Handler,
+		},
+		{
+			MethodName: "GetAllByName",
+			Handler:    _Product_GetAllByName_Handler,
+		},
+		{
+			MethodName: "GetAllByNameDesc",
+			Handler:    _Product_GetAllByNameDesc_Handler,
+		},
+		{
+			MethodName: "GetAllByCreated",
+			Handler:    _Product_GetAllByCreated_Handler,
+		},
+		{
+			MethodName: "GetAllByCreatedDesc",
+			Handler:    _Product_GetAllByCreatedDesc_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

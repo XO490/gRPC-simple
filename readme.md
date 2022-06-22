@@ -7,7 +7,7 @@ gRPC-servers
 
 ---
 
-Структура одной сущности
+### Структура одной сущности
 - ID - первичный ключ
 - Name
 - Timestamp - таймстамп создания сущности (time.Time{})
@@ -21,15 +21,33 @@ gRPC-servers
 - [ ] добавление
 - [ ] изменение
 - [ ] удаление
-- [ ] Получение всего списка продуктов
-- [ ] по названию в алфавитном порядке
-- [ ] по названию в алфавитном порядке  | реверс
-- [ ] с сортировкой по времени создания
-- [ ] с сортировкой по времени создания | реверс
-
-
+- [x] Получение всего списка продуктов
+  - [x] по уникальному идентификатору
+  - [x] по уникальному идентификатору  | реверс
+  - [x] по названию в алфавитном порядке
+  - [x] по названию в алфавитном порядке  | реверс
+  - [x] с сортировкой по времени создания
+  - [x] с сортировкой по времени создания | реверс
 ---
+```
+grpcurl -plaintext localhost:9092 describe
 
+grpc.reflection.v1alpha.ServerReflection is a service:
+service ServerReflection {
+  rpc ServerReflectionInfo ( stream .grpc.reflection.v1alpha.ServerReflectionRequest ) returns ( stream .grpc.reflection.v1alpha.ServerReflectionResponse );
+}
+proto.Product is a service:
+service Product {
+  rpc GetAllByCreated ( .proto.GetByRequest ) returns ( .proto.GetAllByIdResponse );
+  rpc GetAllByCreatedDesc ( .proto.GetByRequest ) returns ( .proto.GetAllByIdResponse );
+  rpc GetAllById ( .proto.GetByRequest ) returns ( .proto.GetAllByIdResponse );
+  rpc GetAllByIdDesc ( .proto.GetByRequest ) returns ( .proto.GetAllByIdResponse );
+  rpc GetAllByName ( .proto.GetByRequest ) returns ( .proto.GetAllByIdResponse );
+  rpc GetAllByNameDesc ( .proto.GetByRequest ) returns ( .proto.GetAllByIdResponse );
+  rpc GetBy ( .proto.GetByRequest ) returns ( .proto.GetByResponse );
+}
+```
+---
 ```
 grpcurl -plaintext -d '{"id": "4"}' localhost:9092 proto.Product.GetBy
 
@@ -54,18 +72,166 @@ grpcurl -plaintext -d '{"name": "NFT-2"}' localhost:9092 proto.Product.GetBy
     }
 ```
 ---
+```
+grpcurl -plaintext localhost:9092 proto.Product.GetAllById
+
+{
+  "result": [
+    {
+      "id": "1",
+      "name": "nft-1",
+      "createdAt": "1654355386",
+      "price": "4",
+      "description": "bla bla 1"
+    },
+    {
+      "id": "2",
+      "name": "NFT-2",
+      "createdAt": "1654661408",
+      "price": "547",
+      "description": "bla bla 2"
+    },
+    {
+      "id": "3",
+      "name": "NFT-3",
+      "createdAt": "1655310000",
+      "price": "76",
+      "description": "bla bla 3"
+    },
+    {
+      "id": "4",
+      "name": "NFT-4",
+      "createdAt": "1654837200",
+      "price": "0.94",
+      "description": "bla bla 4"
+    }
+  ]
+}
+```
+---
+```
+grpcurl -plaintext localhost:9092 proto.Product.GetAllByIdDesc
+
+{
+  "result": [
+    {
+      "id": "4",
+      "name": "NFT-4",
+      "createdAt": "1654837200",
+      "price": "0.94",
+      "description": "bla bla 4"
+    },
+    {
+      "id": "3",
+      "name": "NFT-3",
+      "createdAt": "1655310000",
+      "price": "76",
+      "description": "bla bla 3"
+    },
+    {
+      "id": "2",
+      "name": "NFT-2",
+      "createdAt": "1654661408",
+      "price": "547",
+      "description": "bla bla 2"
+    },
+    {
+      "id": "1",
+      "name": "nft-1",
+      "createdAt": "1654355386",
+      "price": "4",
+      "description": "bla bla 1"
+    }
+  ]
+}
+```
+---
+```
+grpcurl -plaintext localhost:9092 proto.Product.GetAllByNameDesc
+
+{
+  "result": [
+    {
+      "id": "4",
+      "name": "NFT-4",
+      "createdAt": "1654837200",
+      "price": "0.94",
+      "description": "bla bla 4"
+    },
+    {
+      "id": "3",
+      "name": "NFT-3",
+      "createdAt": "1655310000",
+      "price": "76",
+      "description": "bla bla 3"
+    },
+    {
+      "id": "2",
+      "name": "NFT-2",
+      "createdAt": "1654661408",
+      "price": "547",
+      "description": "bla bla 2"
+    },
+    {
+      "id": "1",
+      "name": "nft-1",
+      "createdAt": "1654355386",
+      "price": "4",
+      "description": "bla bla 1"
+    }
+  ]
+}
+```
+---
+```
+grpcurl -plaintext localhost:9092 proto.Product.GetAllByCreated
+
+{
+  "result": [
+    {
+      "id": "1",
+      "name": "nft-1",
+      "createdAt": "1654355386",
+      "price": "4",
+      "description": "bla bla 1"
+    },
+    {
+      "id": "2",
+      "name": "NFT-2",
+      "createdAt": "1654661408",
+      "price": "547",
+      "description": "bla bla 2"
+    },
+    {
+      "id": "4",
+      "name": "NFT-4",
+      "createdAt": "1654837200",
+      "price": "0.94",
+      "description": "bla bla 4"
+    },
+    {
+      "id": "3",
+      "name": "NFT-3",
+      "createdAt": "1655310000",
+      "price": "76",
+      "description": "bla bla 3"
+    }
+  ]
+}
+```
+---
 
 - [ ] Установка и растройка инфраструктуры для тестового задания
-  - [x] СУБД PostgreSQL @done (22-06-01 17:56)
+  - [x] СУБД PostgreSQL
   - [ ] migrate-tool (для создания и отката миграций, избегать автомиграций)
   - [ ] Bun ORM (построение и отправка SQL-запросов )
-  - [x] Protobuf @done (22-06-01 17:56)
+  - [x] Protobuf
   - [ ] know-types
-  - [x] Кодогенерация: protoc @done (22-06-01 17:56)
-  - [x] gRPCURL (для вз-ия с gRPC-сервером) @done (22-06-01 17:56)
+  - [x] Кодогенерация: protoc
+  - [x] gRPCURL (для вз-ия с gRPC-сервером)
 
 - [ ] Реализация задания
-  - [x] Реализовать .proto структуру для сериализации и десериализации данных, кодогенерации (gRPC, go-types, gateway, proto-descriptors) @done (22-06-03 19:06)
-  - [x] Создание и запуск gRPC-сервера (tcp-listener). @done (22-06-02 17:51)  
-  - [x] Реализовать структуру данных и методы управления сущностями. @done (22-06-06 18:07)
+  - [x] Реализовать .proto структуру для сериализации и десериализации данных, кодогенерации (gRPC, go-types, gateway, proto-descriptors)
+  - [x] Создание и запуск gRPC-сервера (tcp-listener).  
+  - [x] Реализовать структуру данных и методы управления сущностями.
   - [ ] Реализовать для каждого базового метода управления сущностями внешний gRPC-метод для удаленного вызова и обращения к gRPC-серверу.

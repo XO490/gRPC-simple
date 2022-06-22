@@ -11,9 +11,15 @@ package proto;
 
 service Product {
   rpc GetBy(GetByRequest) returns (GetByResponse) {};
-//  rpc GetAllById(google.protobuf.Empty) returns (GetAllByIdResponse) {};
-//  rpc GetAllByName(GetByRequest) returns (GetByResponse) {};
-//  rpc GetAllByCreate(GetByRequest) returns (GetByResponse) {};
+
+  rpc GetAllById(GetByRequest) returns (GetAllByIdResponse) {};
+  rpc GetAllByIdDesc(GetByRequest) returns (GetAllByIdResponse) {};
+
+  rpc GetAllByName(GetByRequest) returns (GetAllByIdResponse) {};
+  rpc GetAllByNameDesc(GetByRequest) returns (GetAllByIdResponse) {};
+
+  rpc GetAllByCreated(GetByRequest) returns (GetAllByIdResponse) {};
+  rpc GetAllByCreatedDesc(GetByRequest) returns (GetAllByIdResponse) {};
 }
 
 message GetByRequest {
@@ -34,12 +40,6 @@ message GetByResponse {
   string description = 5;
 }
 
-//message GetAllByIdResponse {
-//  message Item {
-//    string id = 1;
-//    string name = 2;
-//    int64 created_at = 3;
-//    string price = 4;
-//    string description = 5;
-//  }
-//}
+message GetAllByIdResponse {
+  repeated GetByResponse result = 1;
+}
